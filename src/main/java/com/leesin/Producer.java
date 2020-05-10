@@ -26,7 +26,7 @@ public class Producer extends Thread {
         //client id
         properties.put(ProducerConfig.CLIENT_ID_CONFIG, "producer");
         //partition
-        // properties.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, "com.leesin.Mypartition");
+        properties.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, "com.leesin.Mypartition");
         //序列化
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class.getName());
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
@@ -47,6 +47,7 @@ public class Producer extends Thread {
         int num = 0;
         while (num < 20) {
             String msg = "kafka msg:" + num;
+            //第二个参数key是用来 决定分区的，根据这个key得到一个随机值放到对应的分区中
             producer.send(new ProducerRecord<>(topic,1,msg),(metadata,exception)->{
                 System.out.println(metadata.offset() + "->" + metadata.partition() + "->" + metadata.topic());
             });
